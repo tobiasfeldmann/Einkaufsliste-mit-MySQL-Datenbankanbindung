@@ -7,10 +7,11 @@ public class Zutat {
     int menge;
     String einheit;
 
-    public Zutat(String name, int menge, String einheit) {
+    public Zutat(String name, int menge, String einheit, int id) {
         this.name = name;
         this.menge = menge;
         this.einheit = einheit;
+        this.rezeptID = id;
     }
 
 

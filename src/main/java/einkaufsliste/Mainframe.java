@@ -17,6 +17,8 @@ public class Mainframe extends JFrame {
 
     JPanel mainPanel;
 
+    Rezept rezept;
+
     public void initialize() {
 
         //NORTH Panel
@@ -57,6 +59,12 @@ public class Mainframe extends JFrame {
                 if(!eingabeRezeptname.getText().equals("")) {
                     anzeigeRezeptname.setText(eingabeRezeptname.getText());
                 }
+                rezept = new Rezept();
+                rezept.setAnzahl(1);
+                rezept.setRezeptname(eingabeRezeptname.getText());
+                int neueID = DatabaseConnection.getLatestID();
+                neueID++;
+                rezept.setRezeptID(neueID);
             }
         });
 
@@ -110,7 +118,7 @@ public class Mainframe extends JFrame {
         speichereRezept.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                DatabaseConnection.speichereRezept(rezept, Operations.getArrayListOfZutaten());
             }
         });
         

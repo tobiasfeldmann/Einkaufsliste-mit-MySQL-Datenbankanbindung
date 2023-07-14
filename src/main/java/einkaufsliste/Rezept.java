@@ -3,6 +3,7 @@ package einkaufsliste;
 public class Rezept {
     int rezeptID;
     int anzahl;
+    String rezeptname;
 
 
     public int getRezeptID() {
@@ -19,6 +20,18 @@ public class Rezept {
 
     public void setAnzahl(int anzahl) {
         this.anzahl = anzahl;
+    }
+
+    public String getRezeptname() {
+        return this.rezeptname;
+    }
+
+    public void setRezeptname(String name) {
+        this.rezeptname = name;
+    }
+
+    public static Rezept neuesRezept() {
+        return new Rezept();
     }
 
 }
