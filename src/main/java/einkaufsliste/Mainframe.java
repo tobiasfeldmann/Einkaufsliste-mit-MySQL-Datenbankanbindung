@@ -5,21 +5,24 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class Mainframe extends JFrame {
+
     final private Font mainFont = new Font("Arial" ,  Font.PLAIN, 18);
     
-    JButton rezeptHinzufuegen, rezeptEntfernen, mengenAusgeben, speichereRezept, rezeptNamenFestlegen, letzteZutatEntfernen, zutatHinzufuegen;
+    JButton speichereRezept, rezeptNamenFestlegen, letzteZutatEntfernen, zutatHinzufuegen, rezepteAuswahlOeffnen;
 
     JLabel anzeigeRezeptname;
 
     JTextField eingabeRezeptname, eingabeZutat, eingabeMenge, eingabeMengeneinheit;
 
-    JTextArea aktuelleZutaten;
+    JTextArea aktuelleZutaten, vorhandeneRezepte;
 
     JPanel mainPanel;
 
     Rezept rezept;
 
     public void initialize() {
+
+        MainframeRezepteAuswahl mainframeRezepteAuswahl = new MainframeRezepteAuswahl();
 
         //NORTH Panel
 
@@ -63,10 +66,11 @@ public class Mainframe extends JFrame {
                 rezept.setAnzahl(1);
                 rezept.setRezeptname(eingabeRezeptname.getText());
                 int neueID = DatabaseConnection.getLatestID();
-                neueID++;
                 rezept.setRezeptID(neueID);
             }
         });
+
+    
 
         JPanel northPanel = new JPanel(new GridLayout(1, 3,5,5));
         northPanel.setFont(mainFont);
@@ -79,7 +83,14 @@ public class Mainframe extends JFrame {
 
 
         //EAST PANEL
-
+        vorhandeneRezepte = new JTextArea();
+        vorhandeneRezepte.setFont(mainFont);
+        OperationsMainframe.gebeRezepteAus(vorhandeneRezepte);
+        
+        JPanel eastPanel = new JPanel(new GridLayout(1,1,5,5));
+        eastPanel.setFont(mainFont);
+        eastPanel.add(vorhandeneRezepte);
+        eastPanel.setOpaque(false);
 
 
 
@@ -94,7 +105,7 @@ public class Mainframe extends JFrame {
         zutatHinzufuegen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Operations.zutatHinzufuegen(eingabeZutat, eingabeMenge, eingabeMengeneinheit, aktuelleZutaten);
+                OperationsMainframe.zutatHinzufuegen(eingabeZutat, eingabeMenge, eingabeMengeneinheit, aktuelleZutaten);
             }
         });
 
@@ -106,7 +117,7 @@ public class Mainframe extends JFrame {
         letzteZutatEntfernen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                OperationsMainframe.letzteZutatEntfernen(aktuelleZutaten);
             }
         });
 
@@ -118,18 +129,31 @@ public class Mainframe extends JFrame {
         speichereRezept.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DatabaseConnection.speichereRezept(rezept, Operations.getArrayListOfZutaten());
+                DatabaseConnection.speichereRezept(rezept, OperationsMainframe.getArrayListOfZutaten());
+                eingabeZutat.setText("Zutat");
+                eingabeMenge.setText("Menge");
+                eingabeMengeneinheit.setText("Mengeneinheit");
+                OperationsMainframe.gebeRezepteAus(vorhandeneRezepte);
+            }
+        });
+
+        rezepteAuswahlOeffnen = new JButton("Öffne Rezepteauswahl");
+        rezepteAuswahlOeffnen.setFont(mainFont);
+        rezepteAuswahlOeffnen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainframeRezepteAuswahl.rezepteAuswahlOeffnen();
             }
         });
         
 
-        JPanel southPanel = new JPanel(new GridLayout(1, 3,5,5));
+        JPanel southPanel = new JPanel(new GridLayout(4, 1,5,5));
         southPanel.setFont(mainFont);
         southPanel.add(zutatHinzufuegen);
         southPanel.add(letzteZutatEntfernen);
         southPanel.add(speichereRezept);
+        southPanel.add(rezepteAuswahlOeffnen);
         southPanel.setOpaque(false);
-
 
 
 
@@ -226,8 +250,9 @@ public class Mainframe extends JFrame {
 
 
         //EastPanel hinzufuegen
-
-
+        eastPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        eastPanel.setOpaque(false);
+        mainPanel.add(eastPanel, BorderLayout.EAST);
 
 
         //SouthPanel hinzufügen
@@ -240,7 +265,6 @@ public class Mainframe extends JFrame {
         westPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         westPanel.setOpaque(false);
         mainPanel.add(westPanel, BorderLayout.WEST);
-
 
 
         //CenterPanel hinzufügen
