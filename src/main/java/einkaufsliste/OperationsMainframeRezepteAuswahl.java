@@ -5,14 +5,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class OperationsMainframeRezepteAuswahl {
-    static ArrayList<String> list = new ArrayList<String>();
+    static ArrayList<String> ausgewaehlteRezepteListe = new ArrayList<String>();
+    static String[] rezepteAlsArray;
 
     /**
      * aktualisiert die Anzeige der Rezepte in der Oberfläche
      * @param rezepte, JTextArea der Rezepte
      */ 
     public static void gebeRezepteAus(JTextArea rezepte) {
-        String[] rezepteAlsArray = DatabaseConnection.holeRezepteAusDB();
+        rezepteAlsArray = DatabaseConnection.holeRezepteAusDB();
         String ausgabe = "";
         for(String stringRezept : rezepteAlsArray) {
             ausgabe = ausgabe + stringRezept + "\n";
@@ -20,24 +21,37 @@ public class OperationsMainframeRezepteAuswahl {
         rezepte.setText(ausgabe);
     }
 
+    /**
+     * fügt ausgewwählte Rezepte der rezeptListe hinzu und aktualisiert die Ausgabe auf der Oberfläche
+     * @param rezept ausgewähltes Rezept
+     * @param rezepte JTextArea der Oberfläche
+     */
     public static void fuegeRezeptHinzu(String rezept, JTextArea rezepte) {
-        list.add(rezept);
+        ausgewaehlteRezepteListe.add(rezept);
         gebeAusgewaehlteRezepteAus(rezepte);
     }
 
+    /**
+     * entfernt das zuletzt hinzugefügte Rezept wieder und aktualisiert die Oberfläche durch aufrufen der Methode
+     * @param rezepte  JTextArea der Oberfläche
+     */
     public static void entferneRezept(JTextArea rezepte) {
-        list.remove(list.size() - 1);
+        ausgewaehlteRezepteListe.remove(ausgewaehlteRezepteListe.size() - 1);
         gebeAusgewaehlteRezepteAus(rezepte);
     }
 
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
-
+        DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe);
     }
 
+    /**
+     * Methode die aufgerufen wird um die Oberfläche zu aktualisieren
+     * @param ausgewaehlteRezepte JTextArea der Oberfläche
+     */
     public static void gebeAusgewaehlteRezepteAus(JTextArea ausgewaehlteRezepte) {
         String ausgabe = "";
 
-        for(String rezept : list) {
+        for(String rezept : ausgewaehlteRezepteListe) {
             ausgabe = ausgabe + rezept + "\n";
         }
         ausgewaehlteRezepte.setText(ausgabe);

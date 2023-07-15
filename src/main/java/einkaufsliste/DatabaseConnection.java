@@ -5,11 +5,14 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseConnection {
     static String url="jdbc:mysql://localhost:3306/einkaufslistedatabase";
     static String username = "tobi";
     static String password = "Bazinga0398x";
+    static Map<String, Integer> zutatenMap = new HashMap<>();
 
 
     /**
@@ -172,4 +175,29 @@ public class DatabaseConnection {
         return null;
     }
 
+    
+    /**
+     * Entnimmt einer ArrayList die ausgewählten Rezepte und sucht für jedes einzelne die Zutaten raus und hinterlegt diese in einer Map
+     * @param rezepte ArrayList der ausgewählten Rezepte
+     */
+    public static void holeZutatenAusDB(ArrayList<String> rezepte) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection(url, username, password);
+            Statement statement = connection.createStatement();
+
+            for(String rezept : rezepte) {
+                String rezeptname = rezept;
+                String sqlAnfrage = "SELECT zutatenname, menge FROM zutaten WHERE zutaten.idrezepte = (SELECT idrezepte FROM rezepte WHERE rezeptName = '" + rezeptname + "')";
+                ResultSet result = statement.executeQuery(sqlAnfrage);
+                while(result.next()) {
+                    zutatenMap.merge(result.getString(1), result.getInt(2), Integer::sum);
+                }
+                System.out.println(zutatenMap);
+            }
+        } catch (Exception e) {
+            System.out.println("Fehlgeschlagen");
+            e.printStackTrace();
+        }
+    }
 }

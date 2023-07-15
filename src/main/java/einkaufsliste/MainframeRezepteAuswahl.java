@@ -9,7 +9,7 @@ public class MainframeRezepteAuswahl extends JFrame {
     
     JTextArea vorhandeneRezepte, ausgewaehlteRezepte, aktuelleZutaten;
 
-    JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe;
+    JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe, zutatenAusgeben;
 
     JTextField eingabeRezept;
 
@@ -63,6 +63,15 @@ public class MainframeRezepteAuswahl extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Mainframe mainframe = new Mainframe();
                 mainframe.initialize();
+            }
+        });
+
+        zutatenAusgeben = new JButton("Zutaten ausgeben");
+        zutatenAusgeben.setFont(mainFont);
+        zutatenAusgeben.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OperationsMainframeRezepteAuswahl.gebeZutatenlisteAus(aktuelleZutaten);
             }
         });
 
