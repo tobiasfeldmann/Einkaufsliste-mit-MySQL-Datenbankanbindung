@@ -41,7 +41,11 @@ public class OperationsMainframeRezepteAuswahl {
     }
 
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
-        DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe);
+        String ausgabe = "";
+        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe)) {
+            ausgabe = ausgabe + zutat + "\n";
+        }
+        zutaten.setText(ausgabe);
     }
 
     /**

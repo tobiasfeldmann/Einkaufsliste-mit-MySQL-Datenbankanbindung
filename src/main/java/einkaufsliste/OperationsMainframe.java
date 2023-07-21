@@ -25,7 +25,7 @@ public class OperationsMainframe {
      */
 
     public static void zutatHinzufuegen(JTextField zutat, JTextField menge, JTextField mengeneinheit, JTextArea zutaten) {
-        Zutat neueZutat = new Zutat(zutat.getText(), Integer.parseInt(menge.getText()), mengeneinheit.getText(), DatabaseConnection.getLatestID() + 1);
+        Zutat neueZutat = new Zutat(zutat.getText(), Integer.parseInt(menge.getText()), mengeneinheit.getText(), DatabaseConnection.getLatestID());
         list.add(neueZutat);
         gebeZutatenAus(zutaten);
     }

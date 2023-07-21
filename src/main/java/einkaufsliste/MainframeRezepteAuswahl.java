@@ -75,13 +75,14 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
-        JPanel centerPanel = new JPanel(new GridLayout(5,1,5,5));
+        JPanel centerPanel = new JPanel(new GridLayout(6,1,5,5));
         centerPanel.setFont(mainFont);
         centerPanel.add(vorhandeneRezepte);
         centerPanel.add(eingabeRezept);
         centerPanel.add(rezeptHinzufuegen);
         centerPanel.add(letztesRezeptEntfernen);
         centerPanel.add(zueruckZurRezeptEingabe);
+        centerPanel.add(zutatenAusgeben);
         centerPanel.setOpaque(false);
 
 

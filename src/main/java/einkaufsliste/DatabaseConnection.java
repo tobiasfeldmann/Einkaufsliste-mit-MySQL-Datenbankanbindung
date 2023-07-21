@@ -13,6 +13,7 @@ public class DatabaseConnection {
     static String username = "tobi";
     static String password = "Bazinga0398x";
     static Map<String, Integer> zutatenMap = new HashMap<>();
+    static Map<String, String> zutatenEinheitMap = new HashMap<>();
 
 
     /**
@@ -106,13 +107,6 @@ public class DatabaseConnection {
      * @param listeZutaten, ArrayList aus Zutaten, die jeweils einen Namen, Menge und Mengeneinheit haben
      */
     public static void speichereRezept(Rezept rezept, ArrayList<Zutat> listeZutaten) {
-        /*System.out.println("Rezeptname: " + rezept.getRezeptname() + " RezeptID: " + rezept.getRezeptID());
-        for(Zutat zutat : listeZutaten) {
-            System.out.println(zutat.getName());
-            System.out.println(zutat.getMenge());
-            System.out.println(zutat.getEinheit());
-            System.out.println("zugehörig zu:" + zutat.getRezeptID());
-        }*/
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -180,7 +174,8 @@ public class DatabaseConnection {
      * Entnimmt einer ArrayList die ausgewählten Rezepte und sucht für jedes einzelne die Zutaten raus und hinterlegt diese in einer Map
      * @param rezepte ArrayList der ausgewählten Rezepte
      */
-    public static void holeZutatenAusDB(ArrayList<String> rezepte) {
+    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte) {
+        ArrayList<String> zutaten = new ArrayList<String>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -188,16 +183,23 @@ public class DatabaseConnection {
 
             for(String rezept : rezepte) {
                 String rezeptname = rezept;
-                String sqlAnfrage = "SELECT zutatenname, menge FROM zutaten WHERE zutaten.idrezepte = (SELECT idrezepte FROM rezepte WHERE rezeptName = '" + rezeptname + "')";
+                String sqlAnfrage = "SELECT zutatenname, menge, mengeneinheit FROM zutaten WHERE zutaten.idrezepte = (SELECT idrezepte FROM rezepte WHERE rezeptName = '" + rezeptname + "')";
                 ResultSet result = statement.executeQuery(sqlAnfrage);
                 while(result.next()) {
                     zutatenMap.merge(result.getString(1), result.getInt(2), Integer::sum);
+                    zutatenEinheitMap.put(result.getString(1), result.getString(3));
                 }
                 System.out.println(zutatenMap);
+                System.out.println(zutatenEinheitMap);
             }
         } catch (Exception e) {
             System.out.println("Fehlgeschlagen");
             e.printStackTrace();
         }
+        for(String zutat : zutatenMap.keySet()) {
+            String zutatKomplett = Integer.toString(zutatenMap.get(zutat)) + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
+            zutaten.add(zutatKomplett);
+        }
+        return zutaten;
     }
 }
