@@ -12,7 +12,7 @@ public class DatabaseConnection {
     static String url="jdbc:mysql://localhost:3306/einkaufslistedatabase";
     static String username = "tobi";
     static String password = "Bazinga0398x";
-    static Map<String, Integer> zutatenMap = new HashMap<>();
+    static Map<String, Float> zutatenMap = new HashMap<>();
     static Map<String, String> zutatenEinheitMap = new HashMap<>();
 
 
@@ -174,30 +174,33 @@ public class DatabaseConnection {
      * Entnimmt einer ArrayList die ausgewählten Rezepte und sucht für jedes einzelne die Zutaten raus und hinterlegt diese in einer Map
      * @param rezepte ArrayList der ausgewählten Rezepte
      */
-    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte) {
+    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte, ArrayList<Float> portionen) {
         ArrayList<String> zutaten = new ArrayList<String>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, username, password);
             Statement statement = connection.createStatement();
-
+            int counter = 0;
             for(String rezept : rezepte) {
                 String rezeptname = rezept;
                 String sqlAnfrage = "SELECT zutatenname, menge, mengeneinheit FROM zutaten WHERE zutaten.idrezepte = (SELECT idrezepte FROM rezepte WHERE rezeptName = '" + rezeptname + "')";
                 ResultSet result = statement.executeQuery(sqlAnfrage);
                 while(result.next()) {
-                    zutatenMap.merge(result.getString(1), result.getInt(2), Integer::sum);
+                    float mengeTemp = result.getInt(2) * portionen.get(counter);
+                    System.out.println(mengeTemp);
+                    zutatenMap.merge(result.getString(1),mengeTemp, Float::sum);
                     zutatenEinheitMap.put(result.getString(1), result.getString(3));
                 }
                 System.out.println(zutatenMap);
                 System.out.println(zutatenEinheitMap);
+                counter++;
             }
         } catch (Exception e) {
             System.out.println("Fehlgeschlagen");
             e.printStackTrace();
         }
         for(String zutat : zutatenMap.keySet()) {
-            String zutatKomplett = Integer.toString(zutatenMap.get(zutat)) + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
+            String zutatKomplett = Float.toString(zutatenMap.get(zutat)) + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
             zutaten.add(zutatKomplett);
         }
         return zutaten;

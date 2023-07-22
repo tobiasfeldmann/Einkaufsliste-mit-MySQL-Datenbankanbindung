@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 
 public class OperationsMainframeRezepteAuswahl {
     static ArrayList<String> ausgewaehlteRezepteListe = new ArrayList<String>();
+    static ArrayList<Float> portionenListe = new ArrayList<Float>();
     static String[] rezepteAlsArray;
 
     /**
@@ -26,8 +27,9 @@ public class OperationsMainframeRezepteAuswahl {
      * @param rezept ausgewähltes Rezept
      * @param rezepte JTextArea der Oberfläche
      */
-    public static void fuegeRezeptHinzu(String rezept, JTextArea rezepte) {
+    public static void fuegeRezeptHinzu(String rezept, JTextArea rezepte, float portionen) {
         ausgewaehlteRezepteListe.add(rezept);
+        portionenListe.add(portionen);
         gebeAusgewaehlteRezepteAus(rezepte);
     }
 
@@ -42,7 +44,7 @@ public class OperationsMainframeRezepteAuswahl {
 
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
         String ausgabe = "";
-        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe)) {
+        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe)) {
             ausgabe = ausgabe + zutat + "\n";
         }
         zutaten.setText(ausgabe);
@@ -60,4 +62,14 @@ public class OperationsMainframeRezepteAuswahl {
         }
         ausgewaehlteRezepte.setText(ausgabe);
     }   
+
+
+    public static float stringZuFloat(JTextField portionenFeld) {
+        String portionenString = portionenFeld.getText();
+        System.out.println(portionenString);
+        portionenString = portionenString.replace(',', '.');
+        System.out.println(portionenString);
+        float portionenFloat = Float.parseFloat(portionenString);
+        return portionenFloat;
+    }
 }

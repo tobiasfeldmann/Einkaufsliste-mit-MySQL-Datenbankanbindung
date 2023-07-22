@@ -11,14 +11,29 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe, zutatenAusgeben;
 
-    JTextField eingabeRezept;
+    JTextField eingabeRezept, portionsAuswahl;
 
     public void rezepteAuswahlOeffnen() {
 
-        //CENTER Panel
-        vorhandeneRezepte = new JTextArea("Vorhandene Rezepte");
-        vorhandeneRezepte.setFont(mainFont);
-        OperationsMainframeRezepteAuswahl.gebeRezepteAus(vorhandeneRezepte);
+        //NORTH Panel
+
+        portionsAuswahl = new JTextField("Anzahl Portionen eingeben");
+        portionsAuswahl.setFont(mainFont);
+        portionsAuswahl.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent evt) {
+                if(portionsAuswahl.getText().equals("Anzahl Portionen eingeben")) {
+                    portionsAuswahl.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(portionsAuswahl.getText().equals("")) {
+                    portionsAuswahl.setText("Anzahl Portionen eingeben");
+                }
+            }
+        });
 
         eingabeRezept = new JTextField("Hier Rezepte eingeben");
         eingabeRezept.setFont(mainFont);
@@ -38,12 +53,25 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
+        JPanel northPanel = new JPanel(new GridLayout(1,2,5,5));
+        northPanel.setFont(mainFont);
+        northPanel.setOpaque(false);
+        northPanel.add(portionsAuswahl);
+        northPanel.add(eingabeRezept);
+
+        //CENTER Panel
+
+        vorhandeneRezepte = new JTextArea("Vorhandene Rezepte");
+        vorhandeneRezepte.setFont(mainFont);
+        OperationsMainframeRezepteAuswahl.gebeRezepteAus(vorhandeneRezepte);
+
         rezeptHinzufuegen = new JButton("Rezept zur Liste");
         rezeptHinzufuegen.setFont(mainFont);
         rezeptHinzufuegen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                OperationsMainframeRezepteAuswahl.fuegeRezeptHinzu(eingabeRezept.getText(), ausgewaehlteRezepte);
+                float temp = OperationsMainframeRezepteAuswahl.stringZuFloat(portionsAuswahl);
+                OperationsMainframeRezepteAuswahl.fuegeRezeptHinzu(eingabeRezept.getText(), ausgewaehlteRezepte, temp);
             }
         });
 
@@ -75,10 +103,9 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
-        JPanel centerPanel = new JPanel(new GridLayout(6,1,5,5));
+        JPanel centerPanel = new JPanel(new GridLayout(5,1,5,5));
         centerPanel.setFont(mainFont);
         centerPanel.add(vorhandeneRezepte);
-        centerPanel.add(eingabeRezept);
         centerPanel.add(rezeptHinzufuegen);
         centerPanel.add(letztesRezeptEntfernen);
         centerPanel.add(zueruckZurRezeptEingabe);
@@ -90,7 +117,6 @@ public class MainframeRezepteAuswahl extends JFrame {
         //EAST Panel
         aktuelleZutaten = new JTextArea("Zutatenliste");
         aktuelleZutaten.setFont(mainFont);
-        OperationsMainframeRezepteAuswahl.gebeZutatenlisteAus(aktuelleZutaten);
 
         JPanel eastPanel = new JPanel(new GridLayout(1,1,5,5));
         eastPanel.setFont(mainFont);
@@ -114,6 +140,9 @@ public class MainframeRezepteAuswahl extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(0,128,128));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+
+        northPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        mainPanel.add(northPanel, BorderLayout.NORTH);
 
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         mainPanel.add(centerPanel, BorderLayout.CENTER);
