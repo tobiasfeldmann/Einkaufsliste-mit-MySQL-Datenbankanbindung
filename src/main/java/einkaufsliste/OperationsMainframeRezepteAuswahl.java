@@ -23,7 +23,7 @@ public class OperationsMainframeRezepteAuswahl {
     }
 
     /**
-     * fügt ausgewwählte Rezepte der rezeptListe hinzu und aktualisiert die Ausgabe auf der Oberfläche
+     * fügt ausgewählte Rezepte der rezeptListe hinzu und aktualisiert die Ausgabe auf der Oberfläche
      * @param rezept ausgewähltes Rezept
      * @param rezepte JTextArea der Oberfläche
      */
@@ -42,6 +42,10 @@ public class OperationsMainframeRezepteAuswahl {
         gebeAusgewaehlteRezepteAus(rezepte);
     }
 
+    /**
+     * Holt die Zutaten der jeweiligen Rezepte aus der Datenbank
+     * @param zutaten, JTextArea für die Ausgabe der Zutaten
+     */
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
         String ausgabe = "";
         for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe)) {
@@ -63,7 +67,11 @@ public class OperationsMainframeRezepteAuswahl {
         ausgewaehlteRezepte.setText(ausgabe);
     }   
 
-
+    /**
+     * Übersetzt den String aus der Portionsangabe in einen Float zur Berechnung
+     * @param portionenFeld, JTextField in das die gewünschte Portionsmenge geschrieben wird
+     * @return  float Wert
+     */
     public static float stringZuFloat(JTextField portionenFeld) {
         String portionenString = portionenFeld.getText();
         System.out.println(portionenString);
@@ -72,4 +80,5 @@ public class OperationsMainframeRezepteAuswahl {
         float portionenFloat = Float.parseFloat(portionenString);
         return portionenFloat;
     }
+
 }
