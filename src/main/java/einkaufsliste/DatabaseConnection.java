@@ -133,13 +133,15 @@ public class DatabaseConnection {
                 rueckgabe[counter] = result.getString(1);
                 counter++;
             }
+            connection.close();
+            statement.close();
+            result.close();
             return rueckgabe;
         } 
         catch (Exception e) {
             System.out.println("Fehlgeschlagen");
             System.out.println(e);
         }
-
 
         return null;
     }
@@ -166,10 +168,10 @@ public class DatabaseConnection {
                     zutatenMap.merge(result.getString(1),mengeTemp, Float::sum);
                     zutatenEinheitMap.put(result.getString(1), result.getString(3));
                 }
-                System.out.println(zutatenMap);
-                System.out.println(zutatenEinheitMap);
                 counter++;
             }
+            connection.close();
+            statement.close();
         } catch (Exception e) {
             System.out.println("Fehlgeschlagen");
             e.printStackTrace();
@@ -178,6 +180,7 @@ public class DatabaseConnection {
             String zutatKomplett = Float.toString(zutatenMap.get(zutat)) + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
             zutaten.add(zutatKomplett);
         }
+        
         return zutaten;
     }
 }

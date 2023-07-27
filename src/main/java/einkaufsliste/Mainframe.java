@@ -132,7 +132,9 @@ public class Mainframe extends JFrame {
                 DatabaseConnection.speichereRezept(rezept, OperationsMainframe.getArrayListOfZutaten());
                 eingabeZutat.setText("Zutat");
                 eingabeMenge.setText("Menge");
+                eingabeRezeptname.setText("");
                 eingabeMengeneinheit.setText("Mengeneinheit");
+                aktuelleZutaten.setText("");
                 OperationsMainframe.gebeRezepteAus(vorhandeneRezepte);
             }
         });
@@ -275,7 +277,7 @@ public class Mainframe extends JFrame {
 
         add(mainPanel);
         setTitle("Einkaufsliste");
-        setSize(1900,1000);
+        setSize(1400,790);
         setMinimumSize(new Dimension(1400,790));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
