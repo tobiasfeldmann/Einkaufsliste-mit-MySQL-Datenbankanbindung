@@ -7,6 +7,8 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     final private Font mainFont = new Font("Arial", Font.PLAIN, 18);
     
+    JScrollPane scrollbarZutaten, scrollbarRezepte;
+
     JTextArea vorhandeneRezepte, ausgewaehlteRezepte, aktuelleZutaten;
 
     JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe, zutatenAusgeben;
@@ -75,6 +77,8 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
+        scrollbarRezepte = new JScrollPane(vorhandeneRezepte);
+
         letztesRezeptEntfernen = new JButton("Letztes Rezept wieder entfernen");
         letztesRezeptEntfernen.setFont(mainFont);
         letztesRezeptEntfernen.addActionListener(new ActionListener() {
@@ -105,7 +109,7 @@ public class MainframeRezepteAuswahl extends JFrame {
 
         JPanel centerPanel = new JPanel(new GridLayout(5,1,5,5));
         centerPanel.setFont(mainFont);
-        centerPanel.add(vorhandeneRezepte);
+        centerPanel.add(scrollbarRezepte);
         centerPanel.add(rezeptHinzufuegen);
         centerPanel.add(letztesRezeptEntfernen);
         centerPanel.add(zueruckZurRezeptEingabe);
@@ -118,9 +122,11 @@ public class MainframeRezepteAuswahl extends JFrame {
         aktuelleZutaten = new JTextArea("Zutatenliste");
         aktuelleZutaten.setFont(mainFont);
 
+        scrollbarZutaten = new JScrollPane(aktuelleZutaten);
+
         JPanel eastPanel = new JPanel(new GridLayout(1,1,5,5));
         eastPanel.setFont(mainFont);
-        eastPanel.add(aktuelleZutaten);
+        eastPanel.add(scrollbarZutaten);
         eastPanel.setOpaque(false);
 
 
@@ -155,7 +161,7 @@ public class MainframeRezepteAuswahl extends JFrame {
 
         add(mainPanel);
         setTitle("Einkaufsliste");
-        setSize(1400,790);
+        setSize(1900,1000);
         setMinimumSize(new Dimension(1400,790));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

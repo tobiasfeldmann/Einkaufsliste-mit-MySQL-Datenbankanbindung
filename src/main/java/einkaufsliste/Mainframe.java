@@ -275,7 +275,7 @@ public class Mainframe extends JFrame {
 
         add(mainPanel);
         setTitle("Einkaufsliste");
-        setSize(1400,790);
+        setSize(1900,1000);
         setMinimumSize(new Dimension(1400,790));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
