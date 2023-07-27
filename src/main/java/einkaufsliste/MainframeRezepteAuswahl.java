@@ -15,7 +15,13 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     JTextField eingabeRezept, portionsAuswahl;
 
+    String temp = "";
+
+    String[] rezepte;
+
     public void rezepteAuswahlOeffnen() {
+
+        rezepte = DatabaseConnection.holeRezepteAusDB();
 
         //NORTH Panel
 
@@ -52,6 +58,26 @@ public class MainframeRezepteAuswahl extends JFrame {
                 if(eingabeRezept.getText().equals("")) {
                     eingabeRezept.setText("Hier Rezepte eingeben");
                 }
+            }
+        });
+        eingabeRezept.addKeyListener(new KeyListener() {
+
+            //Dropdown menü https://stackoverflow.com/questions/14186955/create-a-autocompleting-textbox-in-java-with-a-dropdown-list
+            @Override
+            public void keyPressed(KeyEvent e) {
+                eingabeRezept.setText(temp);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                temp = eingabeRezept.getText();
+                System.out.println(temp + "Test");
+                OperationsMainframeRezepteAuswahl.gebeRezepteVorschlaegeAus(eingabeRezept, rezepte);
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                //System.out.println(e.getKeyChar());
             }
         });
 
@@ -161,7 +187,7 @@ public class MainframeRezepteAuswahl extends JFrame {
 
         add(mainPanel);
         setTitle("Einkaufsliste");
-        setSize(1900,1000);
+        setSize(1400,790);
         setMinimumSize(new Dimension(1400,790));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
