@@ -2,14 +2,10 @@ package einkaufsliste;
 
 public class Main {
     public static void main(String[] args) {
-
-        /**
-         * TODO
-         * Anpassen der Größe der jeweiligen Anzeigen, damit diese nicht zu klein sind
-         * vorschlag Funktion
-         */
+        MainframeRezepteAuswahl mainframeRezepteAuswahl = new MainframeRezepteAuswahl();
         Mainframe mainframe = new Mainframe();
-        mainframe.initialize();
+        MainframeSpeicher mainframeSpeicher = new MainframeSpeicher(mainframe, mainframeRezepteAuswahl);
+        mainframe.initialize(mainframeSpeicher);
     }
     
 }

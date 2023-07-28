@@ -20,9 +20,9 @@ public class Mainframe extends JFrame {
 
     Rezept rezept;
 
-    public void initialize() {
+    boolean bereitsErstellt = false;
 
-        MainframeRezepteAuswahl mainframeRezepteAuswahl = new MainframeRezepteAuswahl();
+    public void initialize(MainframeSpeicher speicher) {
 
         //NORTH Panel
 
@@ -144,7 +144,14 @@ public class Mainframe extends JFrame {
         rezepteAuswahlOeffnen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainframeRezepteAuswahl.rezepteAuswahlOeffnen();
+                if(!bereitsErstellt) {
+                    speicher.getMainframeRezepteAuswahl().rezepteAuswahlOeffnen(speicher);
+                }
+                else {
+                    speicher.getMainframeRezepteAuswahl().setVisible(true);
+                }
+                bereitsErstellt = true;
+                setVisible(false);
             }
         });
         
@@ -283,5 +290,12 @@ public class Mainframe extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
 
+    }
+
+    public void leereAnzeigen() {
+        this.eingabeZutat.setText("");
+        this.eingabeMenge.setText("");
+        this.eingabeMengeneinheit.setText("");
+        this.eingabeRezeptname.setText("");
     }
 }

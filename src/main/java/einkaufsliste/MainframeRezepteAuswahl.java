@@ -21,7 +21,7 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     String[] rezepte;
 
-    public void rezepteAuswahlOeffnen() {
+    public void rezepteAuswahlOeffnen(MainframeSpeicher speicher) {
 
         rezepte = DatabaseConnection.holeRezepteAusDB();
 
@@ -135,8 +135,8 @@ public class MainframeRezepteAuswahl extends JFrame {
         zueruckZurRezeptEingabe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Mainframe mainframe = new Mainframe();
-                mainframe.initialize();
+                speicher.getMainframe().setVisible(true);
+                setVisible(false);
             }
         });
 
@@ -149,13 +149,9 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
-        JPanel centerPanel = new JPanel(new GridLayout(5,1,5,5));
+        JPanel centerPanel = new JPanel(new GridLayout(1,1,5,5));
         centerPanel.setFont(mainFont);
         centerPanel.add(scrollListe);
-        centerPanel.add(rezeptHinzufuegen);
-        centerPanel.add(letztesRezeptEntfernen);
-        centerPanel.add(zueruckZurRezeptEingabe);
-        centerPanel.add(zutatenAusgeben);
         centerPanel.setOpaque(false);
 
 
@@ -170,6 +166,15 @@ public class MainframeRezepteAuswahl extends JFrame {
         eastPanel.setFont(mainFont);
         eastPanel.add(scrollbarZutaten);
         eastPanel.setOpaque(false);
+
+        //SOUTH Panel
+        JPanel southPanel = new JPanel(new GridLayout(2,2,5,5));
+        southPanel.setFont(mainFont);
+        southPanel.add(rezeptHinzufuegen);
+        southPanel.add(letztesRezeptEntfernen);
+        southPanel.add(zueruckZurRezeptEingabe);
+        southPanel.add(zutatenAusgeben);
+        southPanel.setOpaque(false);
 
 
         //WEST Panel
@@ -194,6 +199,9 @@ public class MainframeRezepteAuswahl extends JFrame {
 
         centerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         mainPanel.add(centerPanel, BorderLayout.CENTER);
+
+        southPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        mainPanel.add(southPanel, BorderLayout.SOUTH);
 
         eastPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         mainPanel.add(eastPanel, BorderLayout.EAST);
