@@ -17,6 +17,8 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     String temp = "";
 
+    String eingabe = "";
+
     String[] rezepte;
 
     public void rezepteAuswahlOeffnen() {
@@ -60,26 +62,6 @@ public class MainframeRezepteAuswahl extends JFrame {
                 }
             }
         });
-        eingabeRezept.addKeyListener(new KeyListener() {
-
-            //Dropdown menü https://stackoverflow.com/questions/14186955/create-a-autocompleting-textbox-in-java-with-a-dropdown-list
-            @Override
-            public void keyPressed(KeyEvent e) {
-                eingabeRezept.setText(temp);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                temp = eingabeRezept.getText();
-                System.out.println(temp + "Test");
-                OperationsMainframeRezepteAuswahl.gebeRezepteVorschlaegeAus(eingabeRezept, rezepte);
-            }
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-                //System.out.println(e.getKeyChar());
-            }
-        });
 
         JPanel northPanel = new JPanel(new GridLayout(1,2,5,5));
         northPanel.setFont(mainFont);
@@ -88,10 +70,46 @@ public class MainframeRezepteAuswahl extends JFrame {
         northPanel.add(eingabeRezept);
 
         //CENTER Panel
+        //JList zur Auswahl mehrerer Rezepte gleichzeitig
+        JList<String> rezeptListe = new JList<String>(rezepte);
+        rezeptListe.setFont(mainFont);
+        rezeptListe.addMouseListener(new MouseListener() {
 
-        vorhandeneRezepte = new JTextArea("Vorhandene Rezepte");
-        vorhandeneRezepte.setFont(mainFont);
-        OperationsMainframeRezepteAuswahl.gebeRezepteAus(vorhandeneRezepte);
+            //Auswahl der Rezepte per Doppelclick
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               if(e.getClickCount() == 2) {
+                    String rezeptName = rezeptListe.getSelectedValue().toString();
+                    OperationsMainframeRezepteAuswahl.fuegeRezeptHinzu(rezeptName, ausgewaehlteRezepte, 1);
+               }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+               
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+               
+            }
+            
+        });
+
+
+        JScrollPane scrollListe = new JScrollPane(rezeptListe);
+
+
 
         rezeptHinzufuegen = new JButton("Rezept zur Liste");
         rezeptHinzufuegen.setFont(mainFont);
@@ -102,8 +120,6 @@ public class MainframeRezepteAuswahl extends JFrame {
                 OperationsMainframeRezepteAuswahl.fuegeRezeptHinzu(eingabeRezept.getText(), ausgewaehlteRezepte, temp);
             }
         });
-
-        scrollbarRezepte = new JScrollPane(vorhandeneRezepte);
 
         letztesRezeptEntfernen = new JButton("Letztes Rezept wieder entfernen");
         letztesRezeptEntfernen.setFont(mainFont);
@@ -135,7 +151,7 @@ public class MainframeRezepteAuswahl extends JFrame {
 
         JPanel centerPanel = new JPanel(new GridLayout(5,1,5,5));
         centerPanel.setFont(mainFont);
-        centerPanel.add(scrollbarRezepte);
+        centerPanel.add(scrollListe);
         centerPanel.add(rezeptHinzufuegen);
         centerPanel.add(letztesRezeptEntfernen);
         centerPanel.add(zueruckZurRezeptEingabe);

@@ -1,6 +1,7 @@
 package einkaufsliste;
 
 import java.util.*;
+
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -80,27 +81,6 @@ public class OperationsMainframeRezepteAuswahl {
         System.out.println(portionenString);
         float portionenFloat = Float.parseFloat(portionenString);
         return portionenFloat;
-    }
-
-    public static void gebeRezepteVorschlaegeAus(JTextField rezeptAuswahl, String[] rezepte) {
-        if(rezeptAuswahl.getText().length() == 0) {
-            return;
-        }
-        String temp = rezeptAuswahl.getText();
-        Arrays.sort(rezepte);
-        for(String string : rezepte) {
-            if(string.length() >= temp.length() && string.charAt(0) == temp.charAt(0)) {
-                String zeichenTemp = string.substring(0, temp.length());
-                System.out.println(zeichenTemp);
-                System.out.println(temp);
-                System.out.println("---");
-                if(zeichenTemp.equals(temp)) {
-                    System.out.println(string);
-                    rezeptAuswahl.setText(string);
-                    break;
-                }
-            }
-        }
     }
 
 }
