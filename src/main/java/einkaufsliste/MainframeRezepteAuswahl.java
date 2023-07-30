@@ -9,6 +9,8 @@ public class MainframeRezepteAuswahl extends JFrame {
     
     JScrollPane scrollbarZutaten, scrollbarRezepte;
 
+    JLabel anzeigePortionen, anzeigeRezepteingabe;
+
     JTextArea vorhandeneRezepte, ausgewaehlteRezepte, aktuelleZutaten;
 
     JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe, zutatenAusgeben;
@@ -21,18 +23,21 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     String[] rezepte;
 
-    public void rezepteAuswahlOeffnen(MainframeSpeicher speicher) {
+    public void rezepteAuswahlOeffnen(MainframeSpeicher speicher) throws InterruptedException {
 
         rezepte = DatabaseConnection.holeRezepteAusDB();
 
         //NORTH Panel
 
-        portionsAuswahl = new JTextField("Anzahl Portionen eingeben");
+        anzeigePortionen = new JLabel("Hier Anzahl Portionen eingeben");
+        anzeigePortionen.setFont(mainFont);
+
+        portionsAuswahl = new JTextField("Hier Anzahl Portionen eingeben");
         portionsAuswahl.setFont(mainFont);
         portionsAuswahl.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent evt) {
-                if(portionsAuswahl.getText().equals("Anzahl Portionen eingeben")) {
+                if(portionsAuswahl.getText().equals("Hier Anzahl Portionen eingeben")) {
                     portionsAuswahl.setText("");
                 }
             }
@@ -40,17 +45,20 @@ public class MainframeRezepteAuswahl extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if(portionsAuswahl.getText().equals("")) {
-                    portionsAuswahl.setText("Anzahl Portionen eingeben");
+                    portionsAuswahl.setText("Hier Anzahl Portionen eingeben");
                 }
             }
         });
 
-        eingabeRezept = new JTextField("Hier Rezepte eingeben");
+        anzeigeRezepteingabe = new JLabel("Hier Rezept eingeben");
+        anzeigeRezepteingabe.setFont(mainFont);
+        
+        eingabeRezept = new JTextField("Hier Rezept eingeben");
         eingabeRezept.setFont(mainFont);
         eingabeRezept.addFocusListener(new FocusListener() {
             @Override 
             public void focusGained(FocusEvent evt) {
-                if(eingabeRezept.getText().equals("Hier Rezepte eingeben")) {
+                if(eingabeRezept.getText().equals("Hier Rezept eingeben")) {
                     eingabeRezept.setText("");
                 }
             }
@@ -58,14 +66,16 @@ public class MainframeRezepteAuswahl extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 if(eingabeRezept.getText().equals("")) {
-                    eingabeRezept.setText("Hier Rezepte eingeben");
+                    eingabeRezept.setText("Hier Rezept eingeben");
                 }
             }
         });
 
-        JPanel northPanel = new JPanel(new GridLayout(1,2,5,5));
+        JPanel northPanel = new JPanel(new GridLayout(2,2,5,5));
         northPanel.setFont(mainFont);
         northPanel.setOpaque(false);
+        northPanel.add(anzeigePortionen);
+        northPanel.add(anzeigeRezepteingabe);
         northPanel.add(portionsAuswahl);
         northPanel.add(eingabeRezept);
 

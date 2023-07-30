@@ -24,64 +24,6 @@ public class Mainframe extends JFrame {
 
     public void initialize(MainframeSpeicher speicher) {
 
-        //NORTH Panel
-
-        /**
-         * enthält die Anzeige für den Namen des Rezepts, sowie ein Feld für dessen Eingabe und einen Button zum festlegen
-         */
-
-        anzeigeRezeptname = new JLabel("Rezept",0);
-        anzeigeRezeptname.setFont(mainFont);
-
-        eingabeRezeptname = new JTextField("Rezeptname eingeben");
-        eingabeRezeptname.setFont(mainFont);
-        eingabeRezeptname.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent evt) {
-                eingabeRezeptname.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-
-                //späteres Hinzufügen einer Funktion, die das Textfeld von eingabeRezeptname leert
-                /*try {
-                    wait(5000);
-                    eingabeRezeptname.setText("");
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }*/
-            }
-        });
-
-        rezeptNamenFestlegen = new JButton("Rezeptnamen festlegen");
-        rezeptNamenFestlegen.setFont(mainFont);
-        rezeptNamenFestlegen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!eingabeRezeptname.getText().equals("")) {
-                    anzeigeRezeptname.setText(eingabeRezeptname.getText());
-                }
-                rezept = new Rezept();
-                rezept.setAnzahl(1);
-                rezept.setRezeptname(eingabeRezeptname.getText());
-                int neueID = DatabaseConnection.getLatestID();
-                rezept.setRezeptID(neueID);
-            }
-        });
-
-    
-
-        JPanel northPanel = new JPanel(new GridLayout(1, 3,5,5));
-        northPanel.setFont(mainFont);
-        northPanel.add(anzeigeRezeptname);
-        northPanel.add(eingabeRezeptname);
-        northPanel.add(rezeptNamenFestlegen);
-        northPanel.setOpaque(false);
-
-
-
-
         //EAST PANEL
         vorhandeneRezepte = new JTextArea();
         vorhandeneRezepte.setFont(mainFont);
@@ -145,7 +87,12 @@ public class Mainframe extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(!bereitsErstellt) {
-                    speicher.getMainframeRezepteAuswahl().rezepteAuswahlOeffnen(speicher);
+                    try {
+                        speicher.getMainframeRezepteAuswahl().rezepteAuswahlOeffnen(speicher);
+                    } catch (InterruptedException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
                 }
                 else {
                     speicher.getMainframeRezepteAuswahl().setVisible(true);
@@ -156,9 +103,8 @@ public class Mainframe extends JFrame {
         });
         
 
-        JPanel southPanel = new JPanel(new GridLayout(4, 1,5,5));
+        JPanel southPanel = new JPanel(new GridLayout(1, 3,5,5));
         southPanel.setFont(mainFont);
-        southPanel.add(zutatHinzufuegen);
         southPanel.add(letzteZutatEntfernen);
         southPanel.add(speichereRezept);
         southPanel.add(rezepteAuswahlOeffnen);
@@ -181,6 +127,48 @@ public class Mainframe extends JFrame {
         //CENTER Panel
 
         //JTextField eingabeRezeptname, eingabeZutat, eingabeMenge, eingabeMengeneinheit;
+
+        anzeigeRezeptname = new JLabel("Rezept",0);
+        anzeigeRezeptname.setFont(mainFont);
+        anzeigeRezeptname.setOpaque(true);
+        anzeigeRezeptname.setBackground(new Color(0,204,209));
+
+        eingabeRezeptname = new JTextField("Rezeptname eingeben");
+        eingabeRezeptname.setFont(mainFont);
+        eingabeRezeptname.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent evt) {
+                eingabeRezeptname.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+                //späteres Hinzufügen einer Funktion, die das Textfeld von eingabeRezeptname leert
+                /*try {
+                    wait(5000);
+                    eingabeRezeptname.setText("");
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }*/
+            }
+        });
+
+        rezeptNamenFestlegen = new JButton("Rezeptnamen festlegen");
+        rezeptNamenFestlegen.setFont(mainFont);
+        rezeptNamenFestlegen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!eingabeRezeptname.getText().equals("")) {
+                    anzeigeRezeptname.setText(eingabeRezeptname.getText());
+                }
+                rezept = new Rezept();
+                rezept.setAnzahl(1);
+                rezept.setRezeptname(eingabeRezeptname.getText());
+                int neueID = DatabaseConnection.getLatestID();
+                rezept.setRezeptID(neueID);
+            }
+        });
 
         eingabeZutat = new JTextField("Zutat");
         eingabeZutat.setFont(mainFont);
@@ -236,11 +224,15 @@ public class Mainframe extends JFrame {
             }
         });
 
-        JPanel centerPanel = new JPanel(new GridLayout(3,1,5,5));
+        JPanel centerPanel = new JPanel(new GridLayout(7,1,10,10));
         centerPanel.setFont(mainFont);
+        centerPanel.add(anzeigeRezeptname);
+        centerPanel.add(eingabeRezeptname);
+        centerPanel.add(rezeptNamenFestlegen);
         centerPanel.add(eingabeZutat);
         centerPanel.add(eingabeMenge);
         centerPanel.add(eingabeMengeneinheit);
+        centerPanel.add(zutatHinzufuegen);
         centerPanel.setOpaque(false);
 
 
@@ -250,12 +242,6 @@ public class Mainframe extends JFrame {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(new Color(0,128,128));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
-
-        //NorthPanel hinzufuegen
-        northPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-        northPanel.setOpaque(false);
-        mainPanel.add(northPanel, BorderLayout.NORTH);
 
 
         //EastPanel hinzufuegen
