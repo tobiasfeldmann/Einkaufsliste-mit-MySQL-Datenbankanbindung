@@ -1,14 +1,21 @@
 package einkaufsliste;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class OperationsMainframeRezepteAuswahl {
-    static ArrayList<String> ausgewaehlteRezepteListe = new ArrayList<String>();
-    static ArrayList<Float> portionenListe = new ArrayList<Float>();
-    static String[] rezepteAlsArray;
+    private static ArrayList<String> ausgewaehlteRezepteListe = new ArrayList<String>();
+    private static ArrayList<Float> portionenListe = new ArrayList<Float>();
+    private static String[] rezepteAlsArray;
+    private static ArrayList<String> zutatenAlsArray = new ArrayList<>();
+    private static String ausgabe = "";
 
     /**
      * aktualisiert die Anzeige der Rezepte in der Oberfläche
@@ -49,9 +56,10 @@ public class OperationsMainframeRezepteAuswahl {
      * @param zutaten, JTextArea für die Ausgabe der Zutaten
      */
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
-        String ausgabe = "";
+        ausgabe = "";
         for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe)) {
             ausgabe = ausgabe + zutat + "\n";
+            zutatenAlsArray.add(zutat);
         }
         zutaten.setText(ausgabe);
     }
@@ -76,11 +84,88 @@ public class OperationsMainframeRezepteAuswahl {
      */
     public static float stringZuFloat(JTextField portionenFeld) {
         String portionenString = portionenFeld.getText();
-        System.out.println(portionenString);
         portionenString = portionenString.replace(',', '.');
-        System.out.println(portionenString);
         float portionenFloat = Float.parseFloat(portionenString);
         return portionenFloat;
+    }
+
+    /**
+     * Soll die erzeugte ArrayList aus zutaten als txt Datei speichern, um diese später drucken zu können
+     */
+    public static void speichereDatei() {
+        String path = "C:/temp/tempDatei.txt";
+        File file = new File(path);
+        if(zutatenAlsArray.size() > 0) {
+            try {
+                PrintWriter writer = new PrintWriter(new FileWriter(path));
+                if(file.exists()) {
+                    int counter = 1;
+                    String temp = "";
+                    for(String s : zutatenAlsArray) {
+                        if(counter == 1) {
+                            temp = temp + s;
+                            counter++;
+                        }
+                        else {
+                            temp = berechneLeerzeichen(temp) + s;
+                            writer.println(temp);
+                            writer.println("\n");
+                            counter = 1;
+                            temp = "";
+                        }
+                    }
+                    writer.flush();
+                    writer.close();
+                }
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        druckeDatei(file);
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        loescheDatei(file);
+    }
+
+    /**
+     * Methode um die Datei zu drucken
+     * @param file, zu druckende Datei
+     */
+    public static void druckeDatei(File file) {
+        if(file.exists()) {
+            try {
+                Desktop.getDesktop().print(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * loescht die zuvor erstellte Datei wieder, da diese nur temporär zum drucken diente
+     */
+    public static void loescheDatei(File file) {
+        file.delete();
+    }
+
+    /**
+     * Methode um die erste Zeile Zeichen besser von der zweiten durch eine feste Anzahl aus Zeichen zu trennen
+     * @param s
+     * @return
+     */
+    public static String berechneLeerzeichen(String s) {
+        StringBuilder builder = new StringBuilder(s);
+        int abstand = 45;
+        int laenge = s.length();
+        int differenz = abstand - laenge;
+        for(int i1 = differenz; i1 > 0; i1--) {
+            builder.append(" ");
+        }
+        return builder.toString();
     }
 
 }

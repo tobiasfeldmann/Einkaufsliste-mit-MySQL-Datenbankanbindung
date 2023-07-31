@@ -164,7 +164,6 @@ public class DatabaseConnection {
                 ResultSet result = statement.executeQuery(sqlAnfrage);
                 while(result.next()) {
                     float mengeTemp = result.getInt(2) * portionen.get(counter);
-                    System.out.println(mengeTemp);
                     zutatenMap.merge(result.getString(1),mengeTemp, Float::sum);
                     zutatenEinheitMap.put(result.getString(1), result.getString(3));
                 }

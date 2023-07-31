@@ -13,7 +13,7 @@ public class MainframeRezepteAuswahl extends JFrame {
 
     JTextArea vorhandeneRezepte, ausgewaehlteRezepte, aktuelleZutaten;
 
-    JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe, zutatenAusgeben;
+    JButton rezeptHinzufuegen, letztesRezeptEntfernen, zueruckZurRezeptEingabe, zutatenAusgeben, allesZurueckSetzen, zutatenListeDrucken;
 
     JTextField eingabeRezept, portionsAuswahl;
 
@@ -32,6 +32,7 @@ public class MainframeRezepteAuswahl extends JFrame {
         anzeigePortionen = new JLabel("Hier Anzahl Portionen eingeben");
         anzeigePortionen.setFont(mainFont);
 
+        //Eingabe für die Anzahl an Portionen
         portionsAuswahl = new JTextField("Hier Anzahl Portionen eingeben");
         portionsAuswahl.setFont(mainFont);
         portionsAuswahl.addFocusListener(new FocusListener() {
@@ -53,6 +54,7 @@ public class MainframeRezepteAuswahl extends JFrame {
         anzeigeRezepteingabe = new JLabel("Hier Rezept eingeben");
         anzeigeRezepteingabe.setFont(mainFont);
         
+        //eingabe des Rezeptnamens zum hinzufügen
         eingabeRezept = new JTextField("Hier Rezept eingeben");
         eingabeRezept.setFont(mainFont);
         eingabeRezept.addFocusListener(new FocusListener() {
@@ -117,10 +119,11 @@ public class MainframeRezepteAuswahl extends JFrame {
         });
 
 
+        //ScrollPane für die Anzeige der Rezepte in der Datenbank
         JScrollPane scrollListe = new JScrollPane(rezeptListe);
 
 
-
+        //Fügt das geschriebene Rezept hinzu, mit Portionsangabe
         rezeptHinzufuegen = new JButton("Rezept zur Liste");
         rezeptHinzufuegen.setFont(mainFont);
         rezeptHinzufuegen.addActionListener(new ActionListener() {
@@ -131,6 +134,7 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
+        //Entfernt das letzte Rezept aus der Liste
         letztesRezeptEntfernen = new JButton("Letztes Rezept wieder entfernen");
         letztesRezeptEntfernen.setFont(mainFont);
         letztesRezeptEntfernen.addActionListener(new ActionListener() {
@@ -140,6 +144,7 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
+        //WEchselt das Fenster wieder zurück zur Eingabe von Rezepten
         zueruckZurRezeptEingabe = new JButton("Zurück zur Rezepteingabe");
         zueruckZurRezeptEingabe.setFont(mainFont);
         zueruckZurRezeptEingabe.addActionListener(new ActionListener() {
@@ -150,12 +155,33 @@ public class MainframeRezepteAuswahl extends JFrame {
             }
         });
 
+        //gibt die zutatenliste der aktuell ausgewählten rezepte aus
         zutatenAusgeben = new JButton("Zutaten ausgeben");
         zutatenAusgeben.setFont(mainFont);
         zutatenAusgeben.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 OperationsMainframeRezepteAuswahl.gebeZutatenlisteAus(aktuelleZutaten);
+            }
+        });
+
+        //Button um alle Felder wieder zurückzusetzen
+        allesZurueckSetzen = new JButton("Alles zurücksetzen");
+        allesZurueckSetzen.setFont(mainFont);
+        allesZurueckSetzen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        //Button zum Drucken der Zutatenliste
+        zutatenListeDrucken = new JButton("Drucken");
+        zutatenListeDrucken.setFont(mainFont);
+        zutatenListeDrucken.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OperationsMainframeRezepteAuswahl.speichereDatei();
             }
         });
 
@@ -178,16 +204,19 @@ public class MainframeRezepteAuswahl extends JFrame {
         eastPanel.setOpaque(false);
 
         //SOUTH Panel
-        JPanel southPanel = new JPanel(new GridLayout(2,2,5,5));
+        JPanel southPanel = new JPanel(new GridLayout(3,2,5,5));
         southPanel.setFont(mainFont);
         southPanel.add(rezeptHinzufuegen);
         southPanel.add(letztesRezeptEntfernen);
         southPanel.add(zueruckZurRezeptEingabe);
         southPanel.add(zutatenAusgeben);
+        southPanel.add(allesZurueckSetzen);
+        southPanel.add(zutatenListeDrucken);
         southPanel.setOpaque(false);
 
 
         //WEST Panel
+        //Zeigt bereits ausgewählte Rezepte an
         ausgewaehlteRezepte = new JTextArea("Ausgewählte Rezepte");
         ausgewaehlteRezepte.setFont(mainFont);
 
