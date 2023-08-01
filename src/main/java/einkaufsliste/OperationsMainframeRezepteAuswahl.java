@@ -16,6 +16,9 @@ public class OperationsMainframeRezepteAuswahl {
     private static String[] rezepteAlsArray;
     private static ArrayList<String> zutatenAlsArray = new ArrayList<>();
     private static String ausgabe = "";
+    private static Map<String, Integer> sonstiges = new HashMap<String, Integer>();
+    private static ArrayList<String> zutatenZurSortierung = new ArrayList<String>();
+    private static ArrayList<String> ausgabeZutaten = new ArrayList<String>();
 
     /**
      * aktualisiert die Anzeige der Rezepte in der Oberfläche
@@ -57,10 +60,11 @@ public class OperationsMainframeRezepteAuswahl {
      */
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
         ausgabe = "";
-        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe)) {
+        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe, zutatenZurSortierung)) {
             ausgabe = ausgabe + zutat + "\n";
             zutatenAlsArray.add(zutat);
         }
+
         zutaten.setText(ausgabe);
     }
 
@@ -95,21 +99,35 @@ public class OperationsMainframeRezepteAuswahl {
     public static void speichereDatei() {
         String path = "C:/temp/tempDatei.txt";
         File file = new File(path);
-        if(zutatenAlsArray.size() > 0) {
+        OperationsMainframeRezepteAuswahl.sortiereMitKategorien();
+        if(ausgabeZutaten.size() > 0) {
             try {
                 PrintWriter writer = new PrintWriter(new FileWriter(path));
                 if(file.exists()) {
                     int counter = 1;
                     String temp = "";
-                    for(String s : zutatenAlsArray) {
+                    for(String s : ausgabeZutaten) {
+                        System.out.println(s);
                         if(counter == 1) {
+                            if(s.equals("Vorrat: ") || s.equals("Gemüse / Obst: ") || s.equals("Gekühlt: ") || s.equals("Tiefkühl: ") || s.equals("Sonstiges: ")) {
+                                writer.println("  ");
+                                writer.println(s);
+                                continue;
+                            }
                             temp = temp + s;
                             counter++;
                         }
                         else {
+                            if(s.equals("Vorrat: ") || s.equals("Gemüse / Obst: ") || s.equals("Gekühlt: ") || s.equals("Tiefkühl: ") || s.equals("Sonstiges: ")) {
+                                writer.println(temp);
+                                temp = "";
+                                counter = 1;
+                                writer.println(" ");
+                                writer.println(s);
+                                continue;
+                            }
                             temp = berechneLeerzeichen(temp) + s;
                             writer.println(temp);
-                            writer.println("\n");
                             counter = 1;
                             temp = "";
                         }
@@ -168,4 +186,109 @@ public class OperationsMainframeRezepteAuswahl {
         return builder.toString();
     }
 
+    /**
+     * Speichert die Zutaten je nach Kategorie in einer entsprechenden Map mit passendem Index von zutatenAlsArray ab
+     * @param zutatenListeAusMethode, ArrayListe NUR mit den Bezeichnungen der Zutaten
+     */
+    public static void speichereZutatenZurSortierung(ArrayList<String> zutatenListeAusMethode) {
+        zutatenZurSortierung = zutatenListeAusMethode;
+        System.out.println(zutatenZurSortierung);
+    }
+
+    /**
+     * sortiert die eintrage aus der ArrayList zutatenZurSortierung in entsprechende Maps für die einzelnen Kategorien
+     */
+    public static void sortiereNachKategorien() {
+        int counter = 0;
+        Map<String,String> map = Kategorien.getZuordnung();
+        for(String zutat : zutatenZurSortierung) {
+            if(map.containsKey(zutat)) {
+                String kategorie = map.get(zutat);
+                switch(kategorie) {
+                    case("Vorrat"):
+                        Vorrat.addVorratListe(zutat, counter);
+                        break;
+                    case("Gekühlt"):
+                        Gekuehlt.addGekuehltListe(zutat, counter);
+                        break;
+                    case("Tiefkühl"):
+                        Tiefkuehl.addTiefkuehlListe(zutat, counter);
+                        break;
+                    case("Gemüse / Obst"):
+                        GemueseObst.addGemueseObstListe(zutat, counter);
+                        break;
+                }
+            }
+            else {
+                sonstiges.put(zutat, counter);
+            }
+            counter++;
+        }
+
+        //Testausgabe für alle Maps, die verwendet werden
+        /*System.out.println("Vorrat");
+        for(String s : Vorrat.getMap().keySet()) {
+            System.out.println(s + " " + Vorrat.getMap().get(s));
+        }
+        System.out.println("Gekühlt");
+        for(String s : Gekuehlt.getMap().keySet()) {
+            System.out.println(s + " " + Gekuehlt.getMap().get(s));
+        }
+        System.out.println("Tiefkühl");
+        for(String s : Tiefkuehl.getMap().keySet()) {
+            System.out.println(s + " "+ Tiefkuehl.getMap().get(s));
+        }
+        System.out.println("Gemüse / Obst");
+        for(String key : GemueseObst.getMap().keySet()) {
+            System.out.println(key + " " +  GemueseObst.getMap().get(key));
+        }
+        System.out.println("Sonstiges");
+        for(String s : sonstiges.keySet()) {
+            System.out.println(s + " " + sonstiges.get(s));
+        }*/
+    }
+
+
+    /**
+     * Sortiert die Zutaten in einer ArrayList mit vorhergehender Bezeichnung der Kategorie
+     * Hierfür werden die entsprechenden Maps abgerufen und durchlaufen
+     */
+    public static void sortiereMitKategorien() {
+        Map<String, Integer> mapVorrat = Vorrat.getMap();
+        Map<String, Integer> mapGemueseObst = GemueseObst.getMap();
+        Map<String, Integer> mapGekuehlt = Gekuehlt.getMap();
+        Map<String, Integer> mapTiefkuehl = Tiefkuehl.getMap();
+        System.out.println(mapVorrat);
+
+        ausgabeZutaten.add("Vorrat: ");
+        for(String key : mapVorrat.keySet()) {
+            ausgabeZutaten.add(zutatenAlsArray.get(mapVorrat.get(key)));
+            System.out.println(zutatenAlsArray.get(mapVorrat.get(key)));
+        }
+
+        ausgabeZutaten.add("Gemüse / Obst: ");
+        for(String key: mapGemueseObst.keySet()) {
+            ausgabeZutaten.add(zutatenAlsArray.get(mapGemueseObst.get(key)));
+        }
+
+        ausgabeZutaten.add("Gekühlt: ");
+        for(String key : mapGekuehlt.keySet()) {
+            ausgabeZutaten.add(zutatenAlsArray.get(mapGekuehlt.get(key)));
+        }
+
+        ausgabeZutaten.add("Tiefkühl: ");
+        for(String key : mapTiefkuehl.keySet()) {
+            ausgabeZutaten.add(zutatenAlsArray.get(mapTiefkuehl.get(key)));
+        }
+
+        ausgabeZutaten.add("Sonstiges: ");
+        for(String key : sonstiges.keySet()) {
+            ausgabeZutaten.add(zutatenAlsArray.get(sonstiges.get(key)));
+        }
+
+        for(String s : ausgabeZutaten) {
+            System.out.println(s);
+        }
+
+    }
 }

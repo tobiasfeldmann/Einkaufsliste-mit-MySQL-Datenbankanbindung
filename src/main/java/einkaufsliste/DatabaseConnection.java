@@ -151,7 +151,7 @@ public class DatabaseConnection {
      * Entnimmt einer ArrayList die ausgewählten Rezepte und sucht für jedes einzelne die Zutaten raus und hinterlegt diese in einer Map
      * @param rezepte ArrayList der ausgewählten Rezepte
      */
-    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte, ArrayList<Float> portionen) {
+    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte, ArrayList<Float> portionen, ArrayList<String> zutatenListeSortierung) {
         ArrayList<String> zutaten = new ArrayList<String>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -177,9 +177,11 @@ public class DatabaseConnection {
         }
         for(String zutat : zutatenMap.keySet()) {
             String zutatKomplett = Float.toString(zutatenMap.get(zutat)) + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
+            zutatenListeSortierung.add(zutat);
             zutaten.add(zutatKomplett);
         }
         
+        OperationsMainframeRezepteAuswahl.speichereZutatenZurSortierung(zutatenListeSortierung);
         return zutaten;
     }
 }

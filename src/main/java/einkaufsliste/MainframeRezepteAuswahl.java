@@ -171,7 +171,6 @@ public class MainframeRezepteAuswahl extends JFrame {
         allesZurueckSetzen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
             }
         });
 
@@ -181,6 +180,7 @@ public class MainframeRezepteAuswahl extends JFrame {
         zutatenListeDrucken.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                OperationsMainframeRezepteAuswahl.sortiereNachKategorien();
                 OperationsMainframeRezepteAuswahl.speichereDatei();
             }
         });

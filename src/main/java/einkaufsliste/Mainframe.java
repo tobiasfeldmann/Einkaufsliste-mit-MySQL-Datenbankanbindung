@@ -90,7 +90,6 @@ public class Mainframe extends JFrame {
                     try {
                         speicher.getMainframeRezepteAuswahl().rezepteAuswahlOeffnen(speicher);
                     } catch (InterruptedException e1) {
-                        // TODO Auto-generated catch block
                         e1.printStackTrace();
                     }
                 }
