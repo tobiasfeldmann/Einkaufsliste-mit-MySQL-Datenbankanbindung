@@ -140,13 +140,13 @@ public class OperationsMainframeRezepteAuswahl {
                 System.out.println(e.getMessage());
             }
         }
-        druckeDatei(file);
+        //druckeDatei(file);
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        loescheDatei(file);
+        //loescheDatei(file);
     }
 
     /**
@@ -224,28 +224,6 @@ public class OperationsMainframeRezepteAuswahl {
             }
             counter++;
         }
-
-        //Testausgabe für alle Maps, die verwendet werden
-        /*System.out.println("Vorrat");
-        for(String s : Vorrat.getMap().keySet()) {
-            System.out.println(s + " " + Vorrat.getMap().get(s));
-        }
-        System.out.println("Gekühlt");
-        for(String s : Gekuehlt.getMap().keySet()) {
-            System.out.println(s + " " + Gekuehlt.getMap().get(s));
-        }
-        System.out.println("Tiefkühl");
-        for(String s : Tiefkuehl.getMap().keySet()) {
-            System.out.println(s + " "+ Tiefkuehl.getMap().get(s));
-        }
-        System.out.println("Gemüse / Obst");
-        for(String key : GemueseObst.getMap().keySet()) {
-            System.out.println(key + " " +  GemueseObst.getMap().get(key));
-        }
-        System.out.println("Sonstiges");
-        for(String s : sonstiges.keySet()) {
-            System.out.println(s + " " + sonstiges.get(s));
-        }*/
     }
 
 
@@ -263,7 +241,6 @@ public class OperationsMainframeRezepteAuswahl {
         ausgabeZutaten.add("Vorrat: ");
         for(String key : mapVorrat.keySet()) {
             ausgabeZutaten.add(zutatenAlsArray.get(mapVorrat.get(key)));
-            System.out.println(zutatenAlsArray.get(mapVorrat.get(key)));
         }
 
         ausgabeZutaten.add("Gemüse / Obst: ");
@@ -285,10 +262,5 @@ public class OperationsMainframeRezepteAuswahl {
         for(String key : sonstiges.keySet()) {
             ausgabeZutaten.add(zutatenAlsArray.get(sonstiges.get(key)));
         }
-
-        for(String s : ausgabeZutaten) {
-            System.out.println(s);
-        }
-
     }
 }

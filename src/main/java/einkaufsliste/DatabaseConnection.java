@@ -176,7 +176,11 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         for(String zutat : zutatenMap.keySet()) {
-            String zutatKomplett = Float.toString(zutatenMap.get(zutat)) + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
+            String tempx = Float.toString(zutatenMap.get(zutat));
+            if(tempx.substring(tempx.length() - 2, tempx.length()).equals(".0")) {
+                tempx = tempx.substring(0, tempx.length() - 2);
+            }
+            String zutatKomplett = tempx + " " + zutatenEinheitMap.get(zutat) + " " + zutat; 
             zutatenListeSortierung.add(zutat);
             zutaten.add(zutatKomplett);
         }
