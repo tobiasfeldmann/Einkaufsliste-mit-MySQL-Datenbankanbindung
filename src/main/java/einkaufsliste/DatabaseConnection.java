@@ -15,6 +15,14 @@ public class DatabaseConnection {
     static Map<String, Float> zutatenMap = new HashMap<>();
     static Map<String, String> zutatenEinheitMap = new HashMap<>();
 
+    public static void leereZutatenEinheitMap() {
+        zutatenEinheitMap.clear();
+    }
+
+    public static void leerezutatenMap() {
+        zutatenMap.clear();
+    }
+
 
     /**
      * Gibt die aktuell höchste vergebene RezeptID inkrementiert um 1 zurück, für die Erstellung eines neuen Rezepts.
@@ -151,8 +159,7 @@ public class DatabaseConnection {
      * Entnimmt einer ArrayList die ausgewählten Rezepte und sucht für jedes einzelne die Zutaten raus und hinterlegt diese in einer Map
      * @param rezepte ArrayList der ausgewählten Rezepte
      */
-    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte, ArrayList<Float> portionen, ArrayList<String> zutatenListeSortierung) {
-        ArrayList<String> zutaten = new ArrayList<String>();
+    public static ArrayList<String> holeZutatenAusDB(ArrayList<String> rezepte, ArrayList<Float> portionen, ArrayList<String> zutatenListeSortierung, ArrayList<String> zutaten) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, username, password);

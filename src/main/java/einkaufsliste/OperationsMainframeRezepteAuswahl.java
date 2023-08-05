@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -19,6 +20,7 @@ public class OperationsMainframeRezepteAuswahl {
     private static Map<String, Integer> sonstiges = new HashMap<String, Integer>();
     private static ArrayList<String> zutatenZurSortierung = new ArrayList<String>();
     private static ArrayList<String> ausgabeZutaten = new ArrayList<String>();
+    private static ArrayList<String> zutatenDB = new ArrayList<String>();
 
     /**
      * aktualisiert die Anzeige der Rezepte in der Oberfläche
@@ -60,7 +62,7 @@ public class OperationsMainframeRezepteAuswahl {
      */
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
         ausgabe = "";
-        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe, zutatenZurSortierung)) {
+        for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe, zutatenZurSortierung, zutatenDB)) {
             ausgabe = ausgabe + zutat + "\n";
             zutatenAlsArray.add(zutat);
         }
@@ -107,7 +109,6 @@ public class OperationsMainframeRezepteAuswahl {
                     int counter = 1;
                     String temp = "";
                     for(String s : ausgabeZutaten) {
-                        System.out.println(s);
                         if(counter == 1) {
                             if(s.equals("Vorrat: ") || s.equals("Gemüse / Obst: ") || s.equals("Gekühlt: ") || s.equals("Tiefkühl: ") || s.equals("Sonstiges: ")) {
                                 writer.println("  ");
@@ -140,13 +141,13 @@ public class OperationsMainframeRezepteAuswahl {
                 System.out.println(e.getMessage());
             }
         }
-        //druckeDatei(file);
+        druckeDatei(file);
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //loescheDatei(file);
+        loescheDatei(file);
     }
 
     /**
@@ -192,7 +193,6 @@ public class OperationsMainframeRezepteAuswahl {
      */
     public static void speichereZutatenZurSortierung(ArrayList<String> zutatenListeAusMethode) {
         zutatenZurSortierung = zutatenListeAusMethode;
-        System.out.println(zutatenZurSortierung);
     }
 
     /**
@@ -236,7 +236,6 @@ public class OperationsMainframeRezepteAuswahl {
         Map<String, Integer> mapGemueseObst = GemueseObst.getMap();
         Map<String, Integer> mapGekuehlt = Gekuehlt.getMap();
         Map<String, Integer> mapTiefkuehl = Tiefkuehl.getMap();
-        System.out.println(mapVorrat);
 
         ausgabeZutaten.add("Vorrat: ");
         for(String key : mapVorrat.keySet()) {
@@ -262,5 +261,20 @@ public class OperationsMainframeRezepteAuswahl {
         for(String key : sonstiges.keySet()) {
             ausgabeZutaten.add(zutatenAlsArray.get(sonstiges.get(key)));
         }
+    }
+
+    public static void felderZurueckSetzen(JTextArea ausgewaehlteRezepte, JTextArea aktuelleZutaten, JTextField eingabeRezept,JTextField portionsAuswahl, JLabel anzeigePortionen, JLabel anzeigeRezepteingabe) {
+        ausgewaehlteRezepte.setText("");
+        aktuelleZutaten.setText("");
+        eingabeRezept.setText("Hier Rezept eingeben");
+        portionsAuswahl.setText("Hier Portionen eingeben");
+        anzeigePortionen.setText("Anzeige Portionen");
+        anzeigeRezepteingabe.setText("Anzeige Rezept");
+        ausgewaehlteRezepteListe.clear();
+        portionenListe.clear();
+        zutatenDB.clear();
+        zutatenZurSortierung.clear();
+        DatabaseConnection.leereZutatenEinheitMap();
+        DatabaseConnection.leerezutatenMap();
     }
 }

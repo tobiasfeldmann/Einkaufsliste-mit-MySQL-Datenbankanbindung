@@ -171,6 +171,7 @@ public class MainframeRezepteAuswahl extends JFrame {
         allesZurueckSetzen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                OperationsMainframeRezepteAuswahl.felderZurueckSetzen(ausgewaehlteRezepte, aktuelleZutaten,eingabeRezept, portionsAuswahl, anzeigePortionen, anzeigeRezepteingabe);
             }
         });
 
