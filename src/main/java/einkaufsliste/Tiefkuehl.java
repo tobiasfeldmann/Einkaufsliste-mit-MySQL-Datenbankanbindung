@@ -19,4 +19,8 @@ public class Tiefkuehl {
     public static ArrayList<String> getTiefkuehlListe() {
         return tiefkuehlListe;
     }
+    public static void leereListeLeereMap() {
+        tiefkuehlListe.clear();
+        tiefkuehl.clear();
+    }
 }

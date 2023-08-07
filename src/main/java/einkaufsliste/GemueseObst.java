@@ -19,4 +19,9 @@ public class GemueseObst {
     public static ArrayList<String> getGemueseObstListe() {
         return gemueseObstListe;
     }
+
+    public static void leereListeLeereMap() {
+        gemueseObstListe.clear();
+        gemueseobst.clear();
+    }
 }

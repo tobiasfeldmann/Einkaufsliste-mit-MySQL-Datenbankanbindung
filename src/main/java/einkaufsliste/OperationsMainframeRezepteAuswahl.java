@@ -141,13 +141,13 @@ public class OperationsMainframeRezepteAuswahl {
                 System.out.println(e.getMessage());
             }
         }
-        druckeDatei(file);
+        //druckeDatei(file);
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        loescheDatei(file);
+        //loescheDatei(file);
     }
 
     /**
@@ -263,6 +263,15 @@ public class OperationsMainframeRezepteAuswahl {
         }
     }
 
+    /**
+     * setzt alle ArrayListen, die für die Ausgabe und verarbeitung der Rezepte und Zutaten verwendet werden zurück bzw. leert sie
+     * @param ausgewaehlteRezepte
+     * @param aktuelleZutaten
+     * @param eingabeRezept
+     * @param portionsAuswahl
+     * @param anzeigePortionen
+     * @param anzeigeRezepteingabe
+     */
     public static void felderZurueckSetzen(JTextArea ausgewaehlteRezepte, JTextArea aktuelleZutaten, JTextField eingabeRezept,JTextField portionsAuswahl, JLabel anzeigePortionen, JLabel anzeigeRezepteingabe) {
         ausgewaehlteRezepte.setText("");
         aktuelleZutaten.setText("");
@@ -271,10 +280,18 @@ public class OperationsMainframeRezepteAuswahl {
         anzeigePortionen.setText("Anzeige Portionen");
         anzeigeRezepteingabe.setText("Anzeige Rezept");
         ausgewaehlteRezepteListe.clear();
+        ausgabeZutaten.clear();
         portionenListe.clear();
         zutatenDB.clear();
+        zutatenAlsArray.clear();
         zutatenZurSortierung.clear();
+        sonstiges.clear();
         DatabaseConnection.leereZutatenEinheitMap();
         DatabaseConnection.leerezutatenMap();
+        Vorrat.leereListeLeereMap();
+        Tiefkuehl.leereListeLeereMap();
+        GemueseObst.leereListeLeereMap();
+        Gekuehlt.leereListeLeereMap();
+
     }
 }

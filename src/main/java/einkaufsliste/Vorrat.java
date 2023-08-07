@@ -19,4 +19,9 @@ public class Vorrat {
     public static ArrayList<String> getVorratListe() {
         return vorratListe;
     }
+
+    public static void leereListeLeereMap() {
+        vorratListe.clear();
+        vorrat.clear();
+    }
 }

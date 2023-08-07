@@ -19,4 +19,9 @@ public class Gekuehlt {
     public static ArrayList<String> getGekuehltListe() {
         return gekuehltListe;
     }
+
+    public static void leereListeLeereMap() {
+        gekuehltListe.clear();
+        gekuehlt.clear();
+    }
 }
