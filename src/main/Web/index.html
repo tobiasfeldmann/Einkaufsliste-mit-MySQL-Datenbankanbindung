@@ -5,8 +5,6 @@
     <title>Einkaufsliste</title>
     <link rel="stylesheet" href="style.css">
     <meta name = "viewport" conten="width=device-width, initial-scale-1.0">
-    <script src="script.js">
-    </script>
 </head>
 
 <header>
@@ -18,18 +16,16 @@
         <div class = "container">
             <div class="todo-app">
                 <h2>Einkaufsliste</h2>
+                <div class="row">
+                    <input type="text" id="input-box" placeholder="Produkt hinzufügen">
+                    <button onclick="addTask()" onkeydown="addTask()">Hinzufügen</button>
+                </div>
                 <ul id="list-container">
-                    <li class="checked">Task 1</li>
-                    <li>Task 2</li>
-                    <li>Task 3</li>
+                    
                 </ul>
             </div>
         </div>
     </main>
 </body>
-
-
-
-
-
+<script src="script.js"></script>
 </html>
