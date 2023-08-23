@@ -1,5 +1,22 @@
-
+const fileInput = document.getElementById("file-input");
 const inputBox = document.getElementById("input-box");
+
+function leseDatei() {
+    console.log("test");
+    let file = fileInput.files[0];
+    let reader = new FileReader();
+    console.log("test");
+    let fileContentArray = file.result.split(/\r\n|\n/);
+    for(let line = 0; line < fileContentArray.length - 1; line++) {
+        console.log(line + " --> " + fileContentArray[line]);
+    }
+    console.log("test");
+}
+
+let vorratKategorie = "Vorrat:";
+let gemueseObstKategorie ="Gemüse / Obst:";
+let gekuehltKategorie = "Gekühlt:";
+let tiefkuelKategorie = "Tiefkühl:";
 
 inputBox.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {
@@ -21,6 +38,15 @@ function addTask() {
     }
     inputBox.value = "";
     saveData();
+}
+
+function taskAusDatei(string) {
+    let li = document.createElement("li");
+    li.innerHTML = string;
+    listContainer.appendChild(li);
+    let span = document.createElement("span");
+    span.innerHTML = "\u00d7";
+    li.appendChild(span);
 }
 
 const listContainer = document.getElementById("list-container");
