@@ -11,6 +11,7 @@
     min-height: 100vh;
     background: linear-gradient(135deg, #153667, #4e085f);
     padding: 10px;
+    font-family :arial;
 }
 
 .todo-app {
@@ -20,6 +21,7 @@
     margin: 100px auto 20px;
     padding: 40px 30px 70px;
     border-radius: 15px;
+    font-family :arial;
 }
 
 .todo-app h2 {
@@ -36,6 +38,7 @@ ul li {
     user-select: none;
     cursor: pointer;
     position: relative;
+    font-family :arial;
 }
 
 ul li::before {
@@ -88,6 +91,7 @@ button{
     border-radius: 40px;
     font-size: 16px;
     cursor: pointer;
+    width: 45%;
 
 }
 

@@ -1,22 +1,48 @@
 const fileInput = document.getElementById("file-input");
 const inputBox = document.getElementById("input-box");
+let tempString = "";
+let textAusDatei = "";
 
-function leseDatei() {
-    console.log("test");
-    let file = fileInput.files[0];
-    let reader = new FileReader();
-    console.log("test");
-    let fileContentArray = file.result.split(/\r\n|\n/);
-    for(let line = 0; line < fileContentArray.length - 1; line++) {
-        console.log(line + " --> " + fileContentArray[line]);
+let produktErfasst = false;
+
+fileInput.addEventListener("change", function(e) {
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        textAusDatei = reader.result;
     }
-    console.log("test");
-}
+    reader.readAsText(file, "ISO-8859-1");
+});
 
 let vorratKategorie = "Vorrat:";
-let gemueseObstKategorie ="Gemüse / Obst:";
-let gekuehltKategorie = "Gekühlt:";
-let tiefkuelKategorie = "Tiefkühl:";
+let gemueseObstKategorie ="Gemuese / Obst:";
+let gekuehltKategorie = "Gekuehlt:";
+let tiefkuehlKategorie = "Tiefkuehl:";
+
+function verarbeiteDatei() {
+    let counter = 0;
+    for(let i1 = 0; i1 < textAusDatei.length; i1++) {
+
+        if(tempString === vorratKategorie || tempString === gemueseObstKategorie || tempString === gekuehltKategorie || tempString === tiefkuehlKategorie) {
+            console.log("gefunden" + tempString);
+        }
+        if(textAusDatei[i1] === "*") {
+            tempString = tempString.trimStart();
+            console.log(tempString);
+            taskAusDatei(tempString);
+            tempString = "";
+            continue;
+        }
+
+        tempString = tempString + textAusDatei[i1];
+
+        if(tempString === vorratKategorie || tempString === gemueseObstKategorie || tempString === gekuehltKategorie || tempString === tiefkuehlKategorie) {
+            console.log("gefunden" + tempString);
+        }
+
+    }
+}
 
 inputBox.addEventListener("keypress", function(event) {
     if(event.key === "Enter") {

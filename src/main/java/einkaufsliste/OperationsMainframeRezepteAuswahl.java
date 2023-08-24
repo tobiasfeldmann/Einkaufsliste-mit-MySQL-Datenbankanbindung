@@ -96,14 +96,22 @@ public class OperationsMainframeRezepteAuswahl {
     }
 
     /**
-     * Soll die erzeugte ArrayList aus zutaten als txt Datei speichern, um diese später drucken zu können
+     * Soll die erzeugte ArrayList aus zutaten zu einem String zusammenführen und dann als txt Datei speichern, um diese später drucken zu können´
+     * Außerdem wird eine zweite Version dieses Strings erzeugt, mit Trennzeichen / zwischen den einzelnen Produkten um diese später auf der WEbsite auseinander
+     * halten zu können
      */
     public static void speichereDatei() {
+        //Die jeweiligen Paths + Files
         String path = "C:/temp/tempDatei.txt";
+        String pathJS = "C:/temp/javaScriptTempDatei.txt";
         File file = new File(path);
+        File fileJS = new File(pathJS);
         OperationsMainframeRezepteAuswahl.sortiereMitKategorien();
         if(ausgabeZutaten.size() > 0) {
             try {
+                /**
+                 * PrintWriter zur Erzeugung einer txt Datei zum ausdrucken
+                 */
                 PrintWriter writer = new PrintWriter(new FileWriter(path));
                 if(file.exists()) {
                     int counter = 1;
@@ -136,6 +144,45 @@ public class OperationsMainframeRezepteAuswahl {
                     writer.flush();
                     writer.close();
                 }
+                /**
+                 * PrintWriter um eine TextDatei extra für die Auswertung auf der Website zu erzeugen
+                 */
+                PrintWriter writerJS = new PrintWriter(new FileWriter(pathJS));
+                if(fileJS.exists()) {
+                    int counter = 1;
+                    String temp = "";
+                    for(String s : ausgabeZutaten) {
+                        s = s.replaceAll("ä", "ae");
+                        s = s.replaceAll("ü", "ue");
+                        s = s.replaceAll("ö", "oe");
+                        if(counter == 1) {
+                            if(s.equals("Vorrat: ") || s.equals("Gemüse / Obst: ") || s.equals("Gekühlt: ") || s.equals("Tiefkühl: ") || s.equals("Sonstiges: ")) {
+                                writerJS.println(" ");
+                                writerJS.println(s + "*");
+                                continue;
+                            }
+                            temp = temp + s + "*";
+                            counter++;
+                        }
+                        else {
+                            if(s.equals("Vorrat: ") || s.equals("Gemüse / Obst: ") || s.equals("Gekühlt: ") || s.equals("Tiefkühl: ") || s.equals("Sonstiges: ")) {
+                                writerJS.println(temp);
+                                temp = "";
+                                counter = 1;
+                                writerJS.println(" ");
+                                writerJS.println(s);
+                                continue;
+                            }
+                            temp = berechneLeerzeichen(temp) + s + "*";
+                            writerJS.println(temp);
+                            counter = 1;
+                            temp = "";
+                        }
+                    }
+                    writerJS.flush();
+                    writerJS.close();
+                }
+
             }
             catch (Exception e) {
                 System.out.println(e.getMessage());
