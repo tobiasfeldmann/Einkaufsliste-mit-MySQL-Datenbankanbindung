@@ -15,31 +15,30 @@ fileInput.addEventListener("change", function(e) {
     reader.readAsText(file, "ISO-8859-1");
 });
 
-let vorratKategorie = "Vorrat:";
-let gemueseObstKategorie ="Gemuese / Obst:";
-let gekuehltKategorie = "Gekuehlt:";
-let tiefkuehlKategorie = "Tiefkuehl:";
-
 function verarbeiteDatei() {
-    let counter = 0;
+    let vorratKategorie = "Vorrat:";
+    let gemueseObstKategorie ="Gemuese / Obst:";
+    let gekuehltKategorie = "Gekuehlt:";
+    let tiefkuehlKategorie = "Tiefkuehl:";
+
     for(let i1 = 0; i1 < textAusDatei.length; i1++) {
+        tempString = tempString.trimStart();
 
         if(tempString === vorratKategorie || tempString === gemueseObstKategorie || tempString === gekuehltKategorie || tempString === tiefkuehlKategorie) {
-            console.log("gefunden" + tempString);
-        }
-        if(textAusDatei[i1] === "*") {
-            tempString = tempString.trimStart();
             console.log(tempString);
+            kategorieAusDatei(tempString);
+            tempString = "";
+            i1 += 2;
+            continue;
+        }
+
+        if(textAusDatei[i1] === "*" && tempString != "") {
             taskAusDatei(tempString);
             tempString = "";
             continue;
         }
 
         tempString = tempString + textAusDatei[i1];
-
-        if(tempString === vorratKategorie || tempString === gemueseObstKategorie || tempString === gekuehltKategorie || tempString === tiefkuehlKategorie) {
-            console.log("gefunden" + tempString);
-        }
 
     }
 }
@@ -69,6 +68,16 @@ function addTask() {
 function taskAusDatei(string) {
     let li = document.createElement("li");
     li.innerHTML = string;
+    listContainer.appendChild(li);
+    let span = document.createElement("span");
+    span.innerHTML = "\u00d7";
+    li.appendChild(span);
+}
+
+function kategorieAusDatei(string) {
+    let li = document.createElement("li");
+    li.innerHTML = string;
+    li.setAttribute("class", "kategorie");
     listContainer.appendChild(li);
     let span = document.createElement("span");
     span.innerHTML = "\u00d7";

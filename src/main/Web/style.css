@@ -73,6 +73,14 @@ ul li.checked::before {
     margin-bottom: 25px;
 }
 
+.kategorie::before {
+    background-image: url("pfeil.png");
+}
+
+.kategorie {
+    font-size: 20px;
+}
+
 input {
     flex: 1;
     border: none;
@@ -82,7 +90,7 @@ input {
     font-weight: 14px;
 }
 
-button{
+button {
     border: none;
     outline: none;
     padding: 16px 50px;
