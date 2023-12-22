@@ -14,6 +14,9 @@ public class Kategorien {
         zuordnung.put("Eis", "Tiefkühl");
         zuordnung.put("Brokkoli", "Tiefkühl");
         zuordnung.put("Pommes", "Tiefkühl");
+        zuordnung.put("Kroketten", "Tiefkühl");
+        zuordnung.put("Erbsen", "Tiefkühl");
+        zuordnung.put("Möhren", "Tiefkühl");
         zuordnung.put("", "Tiefkühl");
 
         zuordnung.put("passierte Tomaten", "Vorrat");
@@ -40,6 +43,7 @@ public class Kategorien {
         zuordnung.put("geröstete Pinienkerne", "Vorrat");
         zuordnung.put("Tagliatelle", "Vorrat");
         zuordnung.put("Khiritharaki","Vorrat");
+        zuordnung.put("Milch","Vorrat");
 
         zuordnung.put("Hähnchen", "Gekühlt");
         zuordnung.put("Hack", "Gekühlt");
@@ -57,6 +61,7 @@ public class Kategorien {
         zuordnung.put("Tortellini", "Gekühlt");
         zuordnung.put("Mozarella", "Gekühlt");
         zuordnung.put("Feta light", "Gekühlt");
+        zuordnung.put("Feta", "Gekühlt");
 
         zuordnung.put("Salat", "Gemüse / Obst");
         zuordnung.put("Gurke", "Gemüse / Obst");

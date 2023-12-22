@@ -30,9 +30,20 @@ public class OperationsMainframe {
         gebeZutatenAus(zutaten);
     }
 
+    /**
+     * entfernt die zuletzt hinzugefügte Zutat wieder 
+     */
     public static void letzteZutatEntfernen(JTextArea zutaten) {
         list.remove(list.size() - 1);
         gebeZutatenAus(zutaten);
+    }
+
+
+    /**
+     * leer die Zutatenliste 
+     */
+    public static void clearZutatenListe() {
+        list.clear();
     }
 
     /**

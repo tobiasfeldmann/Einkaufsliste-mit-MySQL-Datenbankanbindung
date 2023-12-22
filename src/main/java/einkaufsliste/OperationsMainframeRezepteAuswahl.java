@@ -62,6 +62,19 @@ public class OperationsMainframeRezepteAuswahl {
      */
     public static void gebeZutatenlisteAus(JTextArea zutaten) {
         ausgabe = "";
+
+        //Leeren der bereits exisiteren Maps / Lists damit Rezepte nicht doppelt aufgeführt werden
+        ausgabeZutaten.clear();
+        zutatenDB.clear();
+        zutatenAlsArray.clear();
+        sonstiges.clear();
+        Vorrat.leereListeLeereMap();
+        Tiefkuehl.leereListeLeereMap();
+        GemueseObst.leereListeLeereMap();
+        Gekuehlt.leereListeLeereMap();
+        DatabaseConnection.leereZutatenEinheitMap();
+        DatabaseConnection.leerezutatenMap();
+
         for(String zutat : DatabaseConnection.holeZutatenAusDB(ausgewaehlteRezepteListe, portionenListe, zutatenZurSortierung, zutatenDB)) {
             ausgabe = ausgabe + zutat + "\n";
             zutatenAlsArray.add(zutat);
@@ -339,6 +352,5 @@ public class OperationsMainframeRezepteAuswahl {
         Tiefkuehl.leereListeLeereMap();
         GemueseObst.leereListeLeereMap();
         Gekuehlt.leereListeLeereMap();
-
     }
 }
