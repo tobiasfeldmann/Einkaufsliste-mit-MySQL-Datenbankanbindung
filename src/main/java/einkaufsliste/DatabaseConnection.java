@@ -10,8 +10,10 @@ import java.util.Map;
 
 public class DatabaseConnection {
     static String url="jdbc:mysql://localhost:3306/einkaufslistedatabase";
-    static String username = "tobi";
-    static String password = "Bazinga0398x";
+    static String username = "root";
+    static String password = "password";
+    //für windows
+    //pw Bazinga plus standard für tobi
     static Map<String, Float> zutatenMap = new HashMap<>();
     static Map<String, String> zutatenEinheitMap = new HashMap<>();
 
